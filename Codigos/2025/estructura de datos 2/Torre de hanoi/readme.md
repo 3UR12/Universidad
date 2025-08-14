@@ -1,4 +1,3 @@
-```markdown
 # Torre de Hanoi Interactiva en Python
 
 Aplicación gráfica de la **Torre de Hanoi** desarrollada en Python usando **tkinter**.  
@@ -151,3 +150,4 @@ Complejidad espacial del generador: **O(n)** por la recursión.
 
 MIT
 ```
+
