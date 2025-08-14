@@ -18,7 +18,7 @@ Objetivo: Obtener exactamente **2 galones** en la jarra de 4 galones.
 
 **Solución mínima:**
 ```
-(0,0) → (0,3) → (3,0) → (3,3) → (4,2) → (0,2) → (2,0) ✅
+(0,0) → (0,3) → (3,0) → (3,3) → (4,2) → (0,2) → (2,0) 
 ```
 
 **Diagrama simplificado de estados** (cada nodo = (J4,J3)):
@@ -157,6 +157,7 @@ python test_pila.py
 ---
 
 **Autor: 3UR12** Desarrollo y análisis en Python a partir de problemas clásicos de lógica.
+
 
 
 
