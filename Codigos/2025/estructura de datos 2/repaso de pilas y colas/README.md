@@ -54,7 +54,7 @@ Restricción: En ninguna orilla puede haber más caníbales que misioneros si ha
 4. (1,2,2,1,D) → (2,2,1,1,I)
 5. (2,2,1,1,I) → (0,2,3,1,D)
 6. (0,2,3,1,D) → (0,3,3,0,I)
-7. (0,3,3,0,I) → (0,0,3,3,D) ✅
+7. (0,3,3,0,I) → (0,0,3,3,D) 
 
 **Diagrama de flujo simplificado:**
 ```
@@ -157,6 +157,7 @@ python test_pila.py
 ---
 
 **Autor: 3UR12** Desarrollo y análisis en Python a partir de problemas clásicos de lógica.
+
 
 
 
