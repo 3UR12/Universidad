@@ -59,6 +59,33 @@ Restricción: En ninguna orilla puede haber más caníbales que misioneros si ha
 10. (0,1,3,2,D) → (1,1,2,2,I) [1M ←]  
 11. (1,1,2,2,I) → (0,0,3,3,D) [1M,1C →] 
 
+```
+(3,3,0,0,I)
+   |(1M,1C) →
+(2,2,1,1,D)
+   |(1M) ←
+(3,2,0,1,I)
+   |(0M,2C) →
+(3,0,0,3,D)
+   |(0M,1C) ←
+(3,1,0,2,I)
+   |(2M,0C) →
+(1,1,2,2,D)
+   |(1M,1C) ←
+(2,2,1,1,I)
+   |(0M,2C) →
+(2,0,1,3,D)
+   |(0M,1C) ←
+(2,1,1,2,I)
+   |(2M,0C) →
+(0,1,3,2,D)
+   |(1M) ←
+(1,1,2,2,I)
+   |(1M,1C) →
+(0,0,3,3,D)
+```
+*(Cada flecha indica quién cruza, en formato `(misioneros, caníbales)`; el último estado es el objetivo.)*
+
 **Complejidad:**  
 - Espacio de estados: hasta 32 combinaciones crudas (menos al filtrar).  
 - BFS: garantiza la mínima cantidad de cruces.
@@ -139,3 +166,4 @@ python test_pila.py
 ---
 
 **Autor:** 3UR12 – Desarrollo y análisis en Python a partir de problemas clásicos de lógica.
+
