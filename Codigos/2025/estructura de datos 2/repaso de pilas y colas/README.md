@@ -157,6 +157,6 @@ python test_pila.py
 ---
 
 **Autor: 3UR12** Desarrollo y análisis en Python a partir de problemas clásicos de lógica.
-```
+
 
 
