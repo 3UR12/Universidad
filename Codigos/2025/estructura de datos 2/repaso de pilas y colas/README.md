@@ -1,5 +1,4 @@
-```markdown
-# 📚 Resolución de Problemas de Lógica y Programación
+```markdown # 📚 Resolución de Problemas de Lógica y Programación
 
 Este documento describe el análisis y la solución a tres problemas clásicos de lógica y programación.  
 Se incluye el razonamiento, el método utilizado, la secuencia de pasos, diagramas de estados y análisis de complejidad.
@@ -159,3 +158,4 @@ python test_pila.py
 
 **Autor: 3UR12** Desarrollo y análisis en Python a partir de problemas clásicos de lógica.
 ```
+
