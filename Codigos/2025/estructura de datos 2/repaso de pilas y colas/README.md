@@ -7,16 +7,6 @@ Se incluye el razonamiento, el método utilizado, la secuencia de pasos, diagram
 
 ## 1️⃣ Problema de las jarras (4 galones y 3 galones)
 
-mermaid
-graph TD
-    A["Estado Inicial: (0,0)"] --> B["Llenar jarra de 4L: (4,0)"]
-    B --> C["Verter 4L en jarra de 3L: (1,3)"]
-    C --> D["Vaciar jarra 3L: (1,0)"]
-    D --> E["Verter jarra 4L a 3L: (0,1)"]
-    E --> F["Llenar jarra de 4L: (4,1)"]
-    F --> G["Verter hasta llenar jarra 3L: (2,3) → ¡Meta!"]
-
-
 **Enunciado:**  
 Dispones de una jarra de 4 galones y otra de 3 galones, sin marcas de medición, y una fuente ilimitada de agua.  
 Objetivo: Obtener exactamente **2 galones** en la jarra de 4 galones.
@@ -167,6 +157,7 @@ python test_pila.py
 ---
 
 **Autor: 3UR12** Desarrollo y análisis en Python a partir de problemas clásicos de lógica.
+
 
 
 
