@@ -1,0 +1,131 @@
+```markdown
+# Torre de Hanoi Interactiva en Python
+
+Aplicación gráfica de la Torre de Hanoi con tkinter, validaciones robustas, deshacer/rehacer, pista, resolución automática, temporizador y verificación de óptimo.
+
+## Uso
+
+1. Elegir la cantidad de discos (3–12) en el Spinbox y pulsar Reiniciar para aplicar cambios.
+2. Hacer clic en la torre de origen y luego en la torre destino para mover el disco superior.
+3. Utilizar los botones:
+   - Deshacer/Rehacer para navegar por el historial.
+   - Pista para ver el siguiente movimiento óptimo.
+   - Resolver desde aquí para completar desde el estado actual si sigue el camino óptimo.
+   - Resolver automáticamente (inicio) para ver la solución completa.
+4. Ajustar la velocidad de animación con el deslizador.
+5. Consultar el HUD (arriba a la derecha) para movimientos realizados, mínimo teórico y tiempo.
+
+## Mínimo teórico y complejidad
+
+- Mínimo de movimientos con \(n\) discos: \(2^n - 1\).
+- Complejidad temporal del algoritmo óptimo: \(O(2^n)\) movimientos; complejidad espacial del generador: \(O(n)\) por la recursión.
+
+| Discos | Mínimo |
+|--------|--------|
+| 3      | 7      |
+| 4      | 15     |
+| 5      | 31     |
+| 6      | 63     |
+| 7      | 127    |
+| 8      | 255    |
+| 9      | 511    |
+| 10     | 1023   |
+| 11     | 2047   |
+| 12     | 4095   |
+
+## Métodos y algoritmos
+
+### Algoritmos principales
+
+- **Generación óptima de movimientos:** `generar_movimientos_hanoi(n_discos, origen, auxiliar, destino)`
+  - Recursivo; produce tuplas `(origen, destino)` en orden óptimo.
+  - Se usa para:
+    - Resolver automáticamente desde el inicio.
+    - Generar la “pista”.
+    - Verificar si el jugador sigue el prefijo óptimo.
+- **Verificación de invariantes:** `validar_invariantes()`
+  - Comprueba que cada torre esté estrictamente decreciente de base a cima.
+  - Previene estados corruptos; ante fallo se revierte con Deshacer.
+- **Seguimiento del camino óptimo (prefijo):**
+  - Variables: `secuencia_optima`, `indice_optimo`, `prefijo_optimo_roto`.
+  - Permite “Pista” y “Resolver desde aquí” solo si se mantiene el prefijo óptimo.
+- **Historial Deshacer/Rehacer:**
+  - Pilas `pila_deshacer` y `pila_rehacer` con instantáneas profundas (deepcopy) del estado.
+  - Estado guardado: `torres`, `contador_movimientos`, `tiempo_transcurrido`, `indice_optimo`, `prefijo_optimo_roto`.
+- **Animación:** `iniciar_animacion()` y `animar_siguiente()`
+  - Usa una cola `movimientos_planificados` y planifica el siguiente paso según la velocidad.
+- **Temporizador:** `iniciar_temporizador_si_es_necesario()`, `actualizar_temporizador()`, `detener_temporizador()`
+  - Basado en `time.perf_counter()`; actualiza el HUD cada 200 ms.
+
+### Métodos de interacción y control
+
+- **Entrada y validación:**
+  - `validar_spinbox(propuesta)` — valida el Spinbox (rango 3–12).
+  - `al_cambiar_discos()` — aplica nuevo valor del Spinbox y reinicia.
+  - `al_reiniciar()` — reinicia si no hay animación.
+- **Eventos de usuario:**
+  - `al_clic(evento)` — selecciona torre origen y destino y delega en `intentar_movimiento`.
+- **Movimiento y estado:**
+  - `intentar_movimiento(origen, destino, registrar_deshacer=True)` — verifica legalidad, actualiza torres y contadores, valida invariantes, evalúa fin de juego y estado óptimo.
+  - `al_deshacer()` — restaura el estado anterior; actualiza HUD.
+  - `al_rehacer()` — reaplica el estado siguiente; actualiza HUD.
+- **Asistencia y solución:**
+  - `mostrar_pista()` — muestra la recomendación del siguiente movimiento óptimo.
+  - `resolver_desde_aqui()` — anima el resto de la solución desde el estado actual si es prefijo óptimo.
+  - `resolver_desde_inicio()` — reinicia y anima toda la solución.
+- **Renderizado:**
+  - `redibujar(resaltar_torre=None)` — orquesta el dibujado del lienzo.
+  - `dibujar_base_y_torres(resaltar_torre)` — base y postes; resalta torre seleccionada.
+  - `dibujar_discos()` — renderiza discos con paleta cíclica.
+  - `dibujar_hud()` — muestra movimientos, mínimo y tiempo; color según eficiencia.
+  - `x_a_torre(x)` — mapea coordenada x del clic a la torre más cercana.
+  - `ancho_de_disco(tam)` — calcula ancho visual del disco.
+  - `formato_tiempo(segundos)` — convierte a mm:ss.
+- **Infraestructura:**
+  - `construir_interfaz()` — crea widgets, enlaza eventos y configura estilos.
+  - `reiniciar_juego(nueva_cantidad=None)` — restaura estado inicial.
+  - `establecer_estado(mensaje, tipo)` — cambia mensaje y estilo de la etiqueta de estado.
+  - `ejecutar_seguro(funcion, *args, **kwargs)` — envoltorio con captura de excepciones; detiene animación y temporizador si falla algo.
+
+## Señales, sonidos y planificación (.bell y similares)
+
+- **`self.ventana.bell()`**
+  - Feedback sonoro no intrusivo para:
+    - Clics inválidos (torre vacía, repetir la misma torre para cancelar, intentos durante animación).
+    - Movimientos ilegales (disco grande sobre pequeño).
+    - Acciones sin historial (no hay nada que deshacer/rehacer).
+- **`messagebox.showerror(...)`**
+  - Diálogo modal cuando ocurre una condición crítica:
+    - Excepción inesperada capturada por `ejecutar_seguro`.
+    - Violación de invariantes tras un movimiento (se informa y se revierte).
+- **`widget.state(["disabled"])` / `widget.state(["!disabled"])`**
+  - Bloqueo temporal de controles durante animación para preservar la consistencia del estado.
+  - Se aplica a botones y Spinbox al iniciar y finalizar una animación.
+- **`widget.after(ms, callback)` y `widget.after_cancel(id)`**
+  - Planificación de:
+    - Pasos de la animación (`animar_siguiente`) según la velocidad.
+    - Ticks del temporizador (`actualizar_temporizador`) cada 200 ms.
+  - Cancelación segura al detener temporizador o finalizar animación.
+- **`canvas.bind("<Button-1>", handler)`**
+  - Enlace del clic izquierdo al manejador `al_clic` para la interacción por torres.
+
+## Diseño y decisiones clave
+
+- **Estados como listas inmutables por posición:** `torres = [T0, T1, T2]` donde cada `Ti` es una pila (lista) con el disco superior al final; simplifica `pop()`/`append()`.
+- **Snapshots con `copy.deepcopy`:** asegura que deshacer/rehacer no compartan referencias mutables.
+- **Prefijo óptimo en vez de replanificación general:** permite “Pista” y “Resolver desde aquí” con coste \(O(1)\) por paso y evita búsquedas complejas.
+- **Validación de invariantes post-movimiento:** protege contra errores lógicos y mantiene integridad, con reversión inmediata si falla.
+- **HUD reactivo:** el temporizador y el estado de eficiencia se actualizan en el mismo ciclo de render para coherencia visual.
+
+## Requisitos e instalación
+
+- Python 3.x (tkinter viene incluido en la mayoría de instalaciones).
+- Ejecución:
+  ```bash
+  python torre_de_hanoi.py
+  ```
+
+## Licencia
+
+MIT.
+```
