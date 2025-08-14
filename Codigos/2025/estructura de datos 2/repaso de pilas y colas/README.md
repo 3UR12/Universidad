@@ -12,17 +12,16 @@ Dispones de una jarra de 4 galones y otra de 3 galones, sin marcas de medición,
 Objetivo: Obtener exactamente **2 galones** en la jarra de 4 galones.
 
 **Metodología:**  
-- Representar el problema como un grafo de estados `(J4, J3)` donde `J4` y `J3` indican litros actuales.
-- Usar **Búsqueda en Anchura (BFS)** para encontrar la secuencia mínima de pasos.
+- Representar el problema como un grafo de estados `(J4, J3)` donde `J4` y `J3` indican litros actuales en cada jarra.  
+- Usar **Búsqueda en Anchura (BFS)** para encontrar la secuencia mínima de pasos.  
 - Operaciones posibles: llenar, vaciar y verter entre jarras.
 
 **Solución mínima:**
 ```
-(0,0) → (0,3) → (3,0) → (3,3) → (4,2) → (0,2) → (2,0) 
+(0,0) → (0,3) → (3,0) → (3,3) → (4,2) → (0,2) → (2,0)
 ```
 
 **Diagrama simplificado de estados** (cada nodo = (J4,J3)):
-
 ```
 (0,0) → (0,3) → (3,0) → (3,3) 
                           ↓
@@ -30,8 +29,8 @@ Objetivo: Obtener exactamente **2 galones** en la jarra de 4 galones.
 ```
 
 **Complejidad:**  
-- Estados posibles: 20 combinaciones.
-- BFS: tiempo O(E) con E = número de transiciones.
+- Estados posibles: 20 combinaciones.  
+- BFS: tiempo **O(V+E)**, con `V ≤ 20`.
 
 ---
 
@@ -42,42 +41,27 @@ Tres misioneros y tres caníbales deben cruzar un río usando una barca con capa
 Restricción: En ninguna orilla puede haber más caníbales que misioneros si hay al menos un misionero en esa orilla.
 
 **Metodología:**  
-- Estado: `(M_izq, C_izq, M_der, C_der, bote)`.
-- Movimientos: `(2,0)`, `(0,2)`, `(1,1)`, `(1,0)`, `(0,1)`.
-- Filtrar solo estados seguros.
-- BFS para encontrar mínimo número de cruces.
+- Estado: `(M_izq, C_izq, M_der, C_der, bote)` donde *bote* ∈ {I, D}.  
+- Movimientos: `(2,0)`, `(0,2)`, `(1,1)`, `(1,0)`, `(0,1)`.  
+- Filtrar solo estados seguros.  
+- Usar BFS para encontrar el mínimo número de cruces.
 
-**Secuencia mínima (7 pasos):**
-1. (3,3,0,0,I) → (3,1,0,2,D)
-2. (3,1,0,2,D) → (3,2,0,1,I)
-3. (3,2,0,1,I) → (1,2,2,1,D)
-4. (1,2,2,1,D) → (2,2,1,1,I)
-5. (2,2,1,1,I) → (0,2,3,1,D)
-6. (0,2,3,1,D) → (0,3,3,0,I)
-7. (0,3,3,0,I) → (0,0,3,3,D) 
-
-**Diagrama de flujo simplificado:**
-```
-(3,3,0,0,I)
-   |(0,2) caníbales→
-(3,1,0,2,D)
-   |(0,1) caníbal←
-(3,2,0,1,I)
-   |(2,0) misioneros→
-(1,2,2,1,D)
-   |(1,0) misionero←
-(2,2,1,1,I)
-   |(0,2) caníbales→
-(0,2,3,1,D)
-   |(0,1) caníbal←
-(0,3,3,0,I)
-   |(0,2) misioneros→
-(0,0,3,3,D)
-```
-*(Los movimientos están anotados como "(misioneros, caníbales)")*
+**Secuencia válida mínima (11 cruces):**
+1. (3,3,0,0,I) → (2,2,1,1,D)  [1M,1C →]  
+2. (2,2,1,1,D) → (3,2,0,1,I)  [1M ←]  
+3. (3,2,0,1,I) → (3,0,0,3,D)  [2C →]  
+4. (3,0,0,3,D) → (3,1,0,2,I)  [1C ←]  
+5. (3,1,0,2,I) → (1,1,2,2,D)  [2M →]  
+6. (1,1,2,2,D) → (2,2,1,1,I)  [1M,1C ←]  
+7. (2,2,1,1,I) → (2,0,1,3,D)  [2C →]  
+8. (2,0,1,3,D) → (2,1,1,2,I)  [1C ←]  
+9. (2,1,1,2,I) → (0,1,3,2,D)  [2M →]  
+10. (0,1,3,2,D) → (1,1,2,2,I) [1M ←]  
+11. (1,1,2,2,I) → (0,0,3,3,D) [1M,1C →] 
 
 **Complejidad:**  
-Espacio de estados pequeño (~32 estados posibles). BFS es óptimo.
+- Espacio de estados: hasta 32 combinaciones crudas (menos al filtrar).  
+- BFS: garantiza la mínima cantidad de cruces.
 
 ---
 
@@ -99,14 +83,18 @@ while (!VaciaPila(p)) {
 ```
 
 **Comportamiento:**
-- `TEST(i)` verdadero: imprime `i` inmediatamente.
-- `TEST(i)` falso: apila `i` para imprimirlo después.
-- Al final, los elementos rechazados se imprimen en orden inverso (LIFO).
+- `TEST(i)` verdadero → imprime `i` inmediatamente.  
+- `TEST(i)` falso → apila `i` para imprimirlo después.  
+- Al final, los rechazados se imprimen en orden inverso (LIFO).
 
 **Ejemplo con N=3:**
 - Si `TEST(i)` siempre es verdadero → `1 2 3`  
 - Si solo falla en `i=2` → `1 3 2`  
 - Si solo `i=3` es verdadero → `3 2 1`
+
+**Opciones posibles del enunciado:**  
+- **Posibles:** a) 1 2 3 b) 1 3 2 e) 2 3 1 f) 3 2 1  
+- **No posibles:** c) 2 1 3 d) 3 1 2
 
 **Diagrama de flujo lógico:**
 ```
@@ -130,23 +118,17 @@ while (!VaciaPila(p)) {
        print(pop())
 ```
 
-**Conclusión:** La secuencia final está formada por:
-1. Valores aceptados (`TEST` verdadero) en orden creciente.
-2. Valores rechazados (`TEST` falso) en orden inverso al que aparecieron.
-
 ---
 
 ## 📂 Archivos del repositorio
-
-- `jarras.py` → Solución al problema de las jarras con BFS.
-- `misioneros.py` → Solución a misioneros y caníbales con BFS y restricciones.
-- `test_pila.py` → Simulación del código `TEST` y pila.
+- `jarras.py` → Solución al problema de las jarras con BFS.  
+- `misioneros.py` → Solución a misioneros y caníbales con BFS y restricciones.  
+- `test_pila.py` → Simulación del código `TEST` y pila.  
 - `README.md` → Documentación detallada (este archivo).
 
 ---
 
 ## ▶️ Ejecución
-
 En terminal, dentro de la carpeta del proyecto:
 ```bash
 python jarras.py
@@ -156,13 +138,4 @@ python test_pila.py
 
 ---
 
-**Autor: 3UR12** Desarrollo y análisis en Python a partir de problemas clásicos de lógica.
-
-
-
-
-
-
-
-
-
+**Autor:** 3UR12 – Desarrollo y análisis en Python a partir de problemas clásicos de lógica.
