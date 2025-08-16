@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h2>Agregar nuevo libro</h2>
+<form method="POST">
+    <div class="mb-3">
+        <label for="titulo" class="form-label">Título</label>
+        <input type="text" class="form-control" name="titulo" id="titulo" required>
+    </div>
+    <div class="mb-3">
+        <label for="autor" class="form-label">Autor</label>
+        <input type="text" class="form-control" name="autor" id="autor" required>
+    </div>
+    <div class="mb-3">
+        <label for="genero" class="form-label">Género</label>
+        <input type="text" class="form-control" name="genero" id="genero" required>
+    </div>
+    <div class="mb-3">
+        <label for="estado" class="form-label">Estado de lectura</label>
+        <select class="form-select" name="estado" id="estado" required>
+            <option value="Pendiente">Pendiente</option>
+            <option value="Leyendo">Leyendo</option>
+            <option value="Terminado">Terminado</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a href="{{ url_for('mostrar_libros') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}
