@@ -379,8 +379,8 @@ git clone https://github.com/tu-usuario/att-payment-simulation.git
 
 **📅 Última actualización:** 21 de enero de 2026  
 **👨‍💻 Autor:** Estudiante de Ingeniería de Sistemas  
-**🏫 Institución:** Universidad Tecnológica de Panamá  
-**📧 Contacto:** [correo@estudiante.utp.ac.pa](mailto:correo@estudiante.utp.ac.pa)
+**🏫 Institución:** Universidad Interamericana de Panamá  
+**📧 Contacto:** [correo@estudiante.utp.ac.pa](mailto:ej8187527@gmail.com)
 
 ---
 
